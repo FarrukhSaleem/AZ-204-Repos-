@@ -23,7 +23,8 @@ namespace SQLApplication.Services
             // _builder.Password = db_password;
             // _builder.InitialCatalog = db_database;
             //return new SqlConnection(_builder.ConnectionString);
-            return new SqlConnection(_configuration.GetConnectionString("ConnectionString"));
+            // return new SqlConnection(_configuration.GetConnectionString("ConnectionString"));
+            return new SqlConnection(_configuration["ConnectionString"]);
         }
         public List<Product> GetProducts()
         {
