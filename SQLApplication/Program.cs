@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.FeatureManagement;
 using SQLApplication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +14,12 @@ var connectionString = "Endpoint=https://appconfigforapp.azconfig.io;Id=+dwR;Sec
 
 builder.Host.ConfigureAppConfiguration(builder =>
 {
-    builder.AddAzureAppConfiguration(connectionString);
+    //builder.AddAzureAppConfiguration(connectionString);
+
+    // enabling feature flags
+
+    builder.AddAzureAppConfiguration(Options =>
+    Options.Connect(connectionString).UseFeatureFlags());
 });
 
 /// Allows to connect with Azure App configuration
@@ -20,6 +28,9 @@ builder.Host.ConfigureAppConfiguration(builder =>
 
 
 builder.Services.AddTransient<IProductService, ProductService>();
+
+builder.Services.AddFeatureManagement();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
